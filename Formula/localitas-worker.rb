@@ -33,7 +33,7 @@ class LocalitasWorker < Formula
     run [
       opt_bin/"localitas-worker",
       "--port", "8091",
-      "--manager-url", "http://localhost:8090",
+      "--core-url", "http://localhost:8090",
     ]
     keep_alive crashed: true
     log_path var/"log/localitas/worker-stdout.log"
