@@ -39,6 +39,7 @@ class LocalitasWorker < Formula
     log_path var/"log/localitas/worker-stdout.log"
     error_log_path var/"log/localitas/worker-stderr.log"
     working_dir var/"localitas"
+    environment_variables LOCALITAS_ENV: "production"
   end
 
   def caveats

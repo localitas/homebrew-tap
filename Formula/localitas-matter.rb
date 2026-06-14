@@ -44,7 +44,7 @@ class LocalitasMatter < Formula
     log_path var/"log/localitas/matter-stdout.log"
     error_log_path var/"log/localitas/matter-stderr.log"
     working_dir var/"localitas"
-    environment_variables MATTER_STORAGE_DIR: var/"localitas/homebase/matter"
+    environment_variables LOCALITAS_ENV: "production", MATTER_STORAGE_DIR: var/"localitas/homebase/matter"
   end
 
   def caveats
