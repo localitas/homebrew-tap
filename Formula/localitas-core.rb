@@ -6,11 +6,7 @@ class LocalitasCore < Formula
 
   on_macos do
     on_arm do
-      url "https://github.com/localitas/releases/releases/download/#{version}/localitas-#{version}-darwin-arm64.tar.gz"
-      # sha256 "" # Update with actual checksum after first release
-    end
-    on_intel do
-      url "https://github.com/localitas/releases/releases/download/#{version}/localitas-#{version}-darwin-amd64.tar.gz"
+      url "https://github.com/localitas/releases/releases/download/v#{version}/localitas-core-#{version}-darwin-arm64.tar.gz"
       # sha256 "" # Update with actual checksum after first release
     end
   end
@@ -18,9 +14,7 @@ class LocalitasCore < Formula
   depends_on :macos
 
   def install
-    bin.install "localitas-core-darwin-arm64" => "localitas-core" if Hardware::CPU.arm?
-    bin.install "localitas-core-darwin-amd64" => "localitas-core" if Hardware::CPU.intel?
-    bin.install "mlx-worker-swift-darwin-arm64" => "mlx-worker-swift" if Hardware::CPU.arm?
+    bin.install "localitas-core"
 
     # Log rotation script
     (bin/"localitas-logrotate").write <<~SH
@@ -70,7 +64,7 @@ class LocalitasCore < Formula
   end
 
   def caveats
-    s = <<~EOS
+    <<~EOS
       Start:
         brew services start localitas-core
 
@@ -84,14 +78,6 @@ class LocalitasCore < Formula
 
       Config: ~/.localitas/config-core.yaml
     EOS
-    if Hardware::CPU.arm?
-      s += <<~EOS
-
-        MLX Worker Swift installed at: #{bin}/mlx-worker-swift
-        Start it separately or use: brew services start localitas-worker
-      EOS
-    end
-    s
   end
 
   test do

@@ -4,17 +4,25 @@ class LocalitasWorker < Formula
   version "0.1.0"
   license "BSL-1.1"
 
+  on_macos do
+    on_arm do
+      url "https://github.com/localitas/releases/releases/download/v#{version}/localitas-worker-#{version}-darwin-arm64.tar.gz"
+      # sha256 "" # Update with actual checksum after first release
+    end
+  end
+
+  depends_on "python@3.12"
   depends_on "localitas/tap/localitas-core"
   depends_on :macos
-  depends_on arch: :arm64
 
   def install
-    core_bin = Formula["localitas-core"].opt_bin/"mlx-worker-swift"
-    if core_bin.exist?
-      bin.install_symlink core_bin => "localitas-worker"
-    else
-      odie "mlx-worker-swift not found in localitas-core. Reinstall localitas-core on Apple Silicon."
-    end
+    libexec.install Dir["*"]
+
+    (bin/"localitas-worker").write <<~SH
+      #!/bin/bash
+      exec "#{Formula["python@3.12"].opt_bin}/python3" "#{libexec}/mlx_worker.py" "$@"
+    SH
+    chmod 0755, bin/"localitas-worker"
   end
 
   def post_install
@@ -39,8 +47,7 @@ class LocalitasWorker < Formula
       Start (after core is running):
         brew services start localitas-worker
 
-      The MLX Swift worker registers with the core daemon automatically.
-      Requires Apple Silicon (arm64).
+      The worker registers with the core daemon automatically.
 
       Logs:
         tail -f #{var}/log/localitas/worker-stdout.log
@@ -50,6 +57,6 @@ class LocalitasWorker < Formula
   end
 
   test do
-    assert_predicate Formula["localitas-core"].opt_bin/"mlx-worker-swift", :exist?
+    assert_predicate bin/"localitas-worker", :exist?
   end
 end
