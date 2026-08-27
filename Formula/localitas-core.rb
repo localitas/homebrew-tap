@@ -4,17 +4,26 @@ class LocalitasCore < Formula
   version "0.1.0"
   license "BSL-1.1"
 
+  # Release assets are the raw, unversioned binaries published to the localitas
+  # monorepo by `make release` (gh release create localitas-core-darwin-{arch}).
   on_macos do
     on_arm do
-      url "https://github.com/localitas/releases/releases/download/v#{version}/localitas-core-#{version}-darwin-arm64.tar.gz"
-      # sha256 "" # Update with actual checksum after first release
+      url "https://github.com/localitas/localitas/releases/download/v#{version}/localitas-core-darwin-arm64"
+      sha256 "ARM64_SHA256_PLACEHOLDER" # filled by `make release-update-formula`
+    end
+    on_intel do
+      url "https://github.com/localitas/localitas/releases/download/v#{version}/localitas-core-darwin-amd64"
+      sha256 "AMD64_SHA256_PLACEHOLDER" # filled by `make release-update-formula`
     end
   end
 
   depends_on :macos
 
   def install
-    bin.install "localitas-core"
+    # The downloaded asset is the raw binary named per-arch; install it as
+    # `localitas-core`.
+    arch = Hardware::CPU.arm? ? "arm64" : "amd64"
+    bin.install "localitas-core-darwin-#{arch}" => "localitas-core"
 
     # Log rotation script
     (bin/"localitas-logrotate").write <<~SH
