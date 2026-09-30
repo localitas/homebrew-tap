@@ -40,7 +40,7 @@ class LocalitasMatter < Formula
       opt_bin/"localitas-matter",
       "--listen", ":9222",
     ]
-    keep_alive crashed: true
+    keep_alive successful_exit: false
     log_path var/"log/localitas/matter-stdout.log"
     error_log_path var/"log/localitas/matter-stderr.log"
     working_dir var/"localitas"

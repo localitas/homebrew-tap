@@ -65,7 +65,7 @@ class LocalitasCore < Formula
       opt_bin/"localitas-core",
       "--data-dir", "#{Dir.home}/.localitas",
     ]
-    keep_alive crashed: true
+    keep_alive successful_exit: false
     log_path var/"log/localitas/core-stdout.log"
     error_log_path var/"log/localitas/core-stderr.log"
     working_dir var/"localitas"

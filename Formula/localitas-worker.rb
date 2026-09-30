@@ -35,7 +35,7 @@ class LocalitasWorker < Formula
       "--port", "8091",
       "--core-url", "http://localhost:8090",
     ]
-    keep_alive crashed: true
+    keep_alive successful_exit: false
     log_path var/"log/localitas/worker-stdout.log"
     error_log_path var/"log/localitas/worker-stderr.log"
     working_dir var/"localitas"
